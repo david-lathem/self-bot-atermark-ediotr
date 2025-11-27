@@ -22,7 +22,7 @@ async function handleMessageCreate(message: Message) {
       "trading alliance"
     ); // case in-sensitive
 
-    let file: Buffer<ArrayBuffer>;
+    let file: Buffer<ArrayBuffer> | undefined;
 
     const fileInMessage = attachments.at(0);
 
@@ -34,7 +34,7 @@ async function handleMessageCreate(message: Message) {
 
     const form = new FormData();
 
-    form.append(`files[0]`, file!, "signal.png");
+    if (file) form.append(`files[0]`, file, "signal.png");
 
     form.append("content", updatedContent || "");
 
