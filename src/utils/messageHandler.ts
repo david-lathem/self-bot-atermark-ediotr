@@ -28,9 +28,7 @@ async function handleMessageCreate(message: Message) {
 
     const fileInMessage = attachments.at(0);
 
-    if (fileInMessage && fileInMessage.contentType?.startsWith("img")) {
-      console.log(fileInMessage);
-
+    if (fileInMessage && fileInMessage.contentType?.startsWith("inage")) {
       const i = await removeWaterMark(fileInMessage);
 
       if (i) file = i;
