@@ -17,9 +17,10 @@ async function handleMessageCreate(message: Message) {
 
     console.log(`Message sent in one of the channels: ${channel.name}`);
 
-    const updatedContent = content
-      .replace(/trading mafia/gi, "trading alliance") // case in-sensitive
-      .replace(/<@&[^>]+>/g, `<@&${process.env.ROLE_ID}>`);
+    const updatedContent = content.replace(
+      /trading mafia/gi,
+      "trading alliance"
+    ); // case in-sensitive
 
     let file: Buffer<ArrayBuffer> | undefined | string;
 
@@ -46,7 +47,7 @@ async function handleMessageCreate(message: Message) {
 
     if (file) form.append(`files[0]`, file, `signal.${fileExtension}`);
 
-    form.append("content", updatedContent || "");
+    form.append("content", `@everyone ${updatedContent}`);
 
     form.submit(
       `${webhookURL.replace("api", "api/v10")}?wait=true`,
