@@ -17,10 +17,9 @@ async function handleMessageCreate(message: Message) {
 
     console.log(`Message sent in one of the channels: ${channel.name}`);
 
-    const updatedContent = content.replace(
-      /trading mafia/gi,
-      "trading alliance"
-    ); // case in-sensitive
+    const updatedContent = content
+      .replace(/trading mafia/gi, "trading alliance") // case in-sensitive
+      .replace(/<@&[^>]+>/g, `<@&${process.env.ROLE_ID}>`);
 
     let file: Buffer<ArrayBuffer> | undefined | string;
 
