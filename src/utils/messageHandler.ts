@@ -22,19 +22,32 @@ async function handleMessageCreate(message: Message) {
       "trading alliance"
     ); // case in-sensitive
 
-    let file: Buffer<ArrayBuffer> | undefined;
+    let file: Buffer<ArrayBuffer> | undefined | string;
+
+    let fileExtension: string = "png";
 
     const fileInMessage = attachments.at(0);
 
-    if (fileInMessage) {
+    if (fileInMessage && fileInMessage.contentType?.startsWith("img")) {
+      console.log(fileInMessage);
+
       const i = await removeWaterMark(fileInMessage);
 
       if (i) file = i;
     }
 
+    if (fileInMessage && fileInMessage.contentType === "audio/ogg") {
+      const res = await fetch(fileInMessage.url);
+
+      const arrayBuff = await res.arrayBuffer();
+
+      file = Buffer.from(arrayBuff);
+      fileExtension = "ogg";
+    }
+
     const form = new FormData();
 
-    if (file) form.append(`files[0]`, file, "signal.png");
+    if (file) form.append(`files[0]`, file, `signal.${fileExtension}`);
 
     form.append("content", updatedContent || "");
 
